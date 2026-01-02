@@ -1,24 +1,15 @@
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        if len(intervals)==1:
+        if len(intervals) < 2:
             return intervals
         intervals.sort()
-        i=0
-        while i<len(intervals)-1:
-            currH = intervals[i][0]
-            currT = intervals[i][1]
-            nextH = intervals[i+1][0]
-            nextT = intervals[i+1][1]
-            if currT>=nextH:
-                if currH>nextH:
-                    intervals[i]=[nextH,currT]
-                elif currT>nextT:
-                    intervals[i]=[currH,currT]                
-                else:
-                    intervals[i]=[currH,nextT]
+        i = 0
+        while i < len(intervals)-1:
+            if intervals[i][1] > intervals[i+1][1] and intervals[i][1] >= intervals[i+1][0]:
                 intervals.pop(i+1)
-            else:  
-                if i==len(intervals)-2:
-                    break
-                i+=1
+            elif intervals[i][1] >= intervals[i+1][0]:
+                intervals[i] = [intervals[i][0],intervals[i+1][1]]
+                intervals.pop(i+1)
+            else:
+                i += 1
         return intervals
